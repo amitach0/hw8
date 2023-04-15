@@ -1,6 +1,6 @@
-# Your name: 
-# Your student id:
-# Your email:
+# Your name: amit
+# Your student id: 94748489
+# Your email: amitach@umich.edu
 # List who you have worked with on this homework:
 
 import matplotlib.pyplot as plt
@@ -11,38 +11,89 @@ import unittest
 def load_rest_data(db):
     """
     This function accepts the file name of a database as a parameter and returns a nested
-    dictionary. Each outer key of the dictionary is the name of each restaurant in the database, 
-    and each inner key is a dictionary, where the key:value pairs should be the category, 
+    dictionary. Each outer key of the dictionary is the name of each restaurant in the database,
+    and each inner key is a dictionary, where the key:value pairs should be the category,
     building, and rating for the restaurant.
     """
-    pass
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
 
+    cursor.execute("SELECT * FROM restaurants")
+    rows = cursor.fetchall()
+
+    rest_dict = {}
+
+    for row in rows:
+        name = row[1]
+        category = row[2]
+        building = row[3]
+        rating = row[4]
+
+        rest_info = {'category': category, 'building': building, 'rating': rating}
+
+        rest_dict[name] = rest_info
+
+    conn.close()
+
+    return rest_dict
 def plot_rest_categories(db):
     """
     This function accepts a file name of a database as a parameter and returns a dictionary. The keys should be the
     restaurant categories and the values should be the number of restaurants in each category. The function should
     also create a bar chart with restaurant categories and the count of number of restaurants in each category.
     """
-    pass
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM restaurants")
+    rows = cursor.fetchall()
+
+    rest_categories = {}
+
+    for row in rows:
+        category = row[2]
+
+        if category in rest_categories:
+            rest_categories[category] += 1
+        else:
+            rest_categories[category] = 1
+
+    conn.close()
+
+    categories = list(rest_categories.keys())
+    counts = list(rest_categories.values())
+
+    plt.bar(categories, counts)
+    plt.xlabel('Restaurant Categories')
+    plt.ylabel('Count')
+    plt.title('Restaurant Categories and their Counts')
+    plt.show()
+
+    return rest_categories
 
 def find_rest_in_building(building_num, db):
-    '''
-    This function accepts the building number and the filename of the database as parameters and returns a list of 
-    restaurant names. You need to find all the restaurant names which are in the specific building. The restaurants 
-    should be sorted by their rating from highest to lowest.
-    '''
-    pass
+    conn = sqlite3.connect(db)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT name FROM restaurants WHERE building = ? ORDER BY rating DESC", (building_num,))
+    rows = cursor.fetchall()
+
+    rest_names = [row[0] for row in rows]
+
+    conn.close()
+
+    return rest_names
 
 #EXTRA CREDIT
 def get_highest_rating(db): #Do this through DB as well
     """
-    This function return a list of two tuples. The first tuple contains the highest-rated restaurant category 
-    and the average rating of the restaurants in that category, and the second tuple contains the building number 
+    This function return a list of two tuples. The first tuple contains the highest-rated restaurant category
+    and the average rating of the restaurants in that category, and the second tuple contains the building number
     which has the highest rating of restaurants and its average rating.
 
-    This function should also plot two barcharts in one figure. The first bar chart displays the categories 
+    This function should also plot two barcharts in one figure. The first bar chart displays the categories
     along the y-axis and their ratings along the x-axis in descending order (by rating).
-    The second bar chart displays the buildings along the y-axis and their ratings along the x-axis 
+    The second bar chart displays the buildings along the y-axis and their ratings along the x-axis
     in descending order (by rating).
     """
     pass
