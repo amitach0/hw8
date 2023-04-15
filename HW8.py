@@ -45,8 +45,12 @@ def plot_rest_categories(db):
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
 
+
+
     cursor.execute("SELECT * FROM restaurants")
+
     rows = cursor.fetchall()
+
 
     rest_categories = {}
 
@@ -100,6 +104,7 @@ def get_highest_rating(db): #Do this through DB as well
 
 #Try calling your functions here
 def main():
+
     pass
 
 class TestHW8(unittest.TestCase):
