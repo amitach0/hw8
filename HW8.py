@@ -25,20 +25,25 @@ def load_rest_data(db):
 
     for row in rows:
         name = row[1]
+
+
         category = row[2]
         building = row[3]
         rating = row[4]
 
         rest_info = {'category': category, 'building': building, 'rating': rating}
 
+
+
         rest_dict[name] = rest_info
+
 
     conn.close()
 
     return rest_dict
 def plot_rest_categories(db):
     """
-    This function accepts a file name of a database as a parameter and returns a dictionary. The keys should be the
+    This function accepts a file name of a database as a parameter nd returns a dictionary. The keys should be the
     restaurant categories and the values should be the number of restaurants in each category. The function should
     also create a bar chart with restaurant categories and the count of number of restaurants in each category.
     """
